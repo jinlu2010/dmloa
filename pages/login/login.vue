@@ -43,22 +43,35 @@
 				})
 			},
 			Login:function(){
-                let url = "http://47.100.125.167:7080/auth/login"; // 后端URL
-                let data = {"account":this.login.account,"password":this.login.password} ;// 登录的Schema
-				axios.post(url,data)
-				//that.$axios.post(url,data)
-                .then(function (res) {
+                let that = this;
+                let data = {"account":this.login.account,"password":this.login.password} // 登录的Schema
+                this.axios.post('http://47.100.125.167:7080/auth/login', data)
+                .then(res => {
                     console.log(res)
                     if(res.data.code == 0) {
-                        alert('登陆成功');
-                        let token = res.data.data.token; // 用户的token
-                        localStorage.setItem('token', token); // 存储在本地，类似于cookie，后期用于登录验证
+						uni.showModal({
+							title:"提示",
+							content:res.data.message,
+							showCancel:false
+						});
+						let token = res.data.data.token; // 用户的token
+                        /**
+                          存储在本地，类似于cookie，后期用于登录验证
+                          token 会注册在axios的方法中，具体请看 main.js
+                        */
+                        localStorage.setItem('token', token); 
+                        // 跳转登录后的页面， 或者弹出成功成功
+                    } else {
+						//that.message = res.data.message
+						// 用户名密码错误， 前端进行处理
+						uni.showModal({
+							title:"提示",
+							content:res.data.message,
+							showCancel:false
+						});
                     }
                 })
-                .catch(function (error) {
-					console.log(error); // 接口异常了
-                });
-			},
+			}
 		}
 	}
 </script>
