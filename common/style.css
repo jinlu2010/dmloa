@@ -713,6 +713,9 @@ checkbox-group {
 	margin: 30rpx 20rpx 0 0;
 	float: left;
 }
+.usercenterlist .list-item-container{
+	height: auto;
+}
 
 .right {
 	float: right;
